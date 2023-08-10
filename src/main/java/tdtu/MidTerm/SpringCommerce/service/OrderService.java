@@ -53,21 +53,22 @@ public class OrderService {
 
         // Create DetailCart
         List<DetailOrder> boxItem = new ArrayList<>();
-        float sumMoney = 0;
+//        float sumMoney = 0;
         for(DetailCart item : boxDetailCart) {
             DetailOrder newDetailOrder = new DetailOrder();
             newDetailOrder.setOrder(order);
             newDetailOrder.setProduct(item.getProduct());
-            sumMoney += item.getProduct().getPrice();
+//            sumMoney += item.getProduct().getPrice();
             boxItem.add(newDetailOrder);
         }
 
+        order.setDetailOrders(boxItem);
         Order resOrder = orderRepository.save(order);
-        detailOrderRepository.saveAll(boxItem);
-        resOrder.setTotalOrder(sumMoney);
+//        detailOrderRepository.saveAll(boxItem);
+//        resOrder.setTotalOrder(sumMoney);
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Insert Order Success", orderRepository.save(resOrder))
+                new ResponseObject("ok", "Insert Order Success", resOrder)
         );
     }
 

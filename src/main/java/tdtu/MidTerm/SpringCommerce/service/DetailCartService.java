@@ -12,6 +12,7 @@ import tdtu.MidTerm.SpringCommerce.repositories.CartRepository;
 import tdtu.MidTerm.SpringCommerce.repositories.DetailCartRepository;
 import tdtu.MidTerm.SpringCommerce.repositories.ProductRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,8 +54,13 @@ public class DetailCartService {
         newDetailCart.setCart(cart.get());
         newDetailCart.setProduct(product.get());
 
+        List<DetailCart> boxDetailCart = new ArrayList<>(cart.get().getDetailCarts());
+        boxDetailCart.add(newDetailCart);
+        cart.get().setDetailCarts(boxDetailCart);
+        Cart resCart = cartRepository.save(cart.get());
+
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Insert DetailCart Success", detailCartRepository.save(newDetailCart))
+                new ResponseObject("ok", "Insert DetailCart Success", resCart.getDetailCarts())
         );
     }
 
